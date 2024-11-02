@@ -2,7 +2,7 @@ import os
 import getpass
 from auth import verificar_usuario
 from db_oracle import conectar_oracle
-from crud import leer_colegiaturas
+from crud import *
 
 # Credenciales
 server = 'localhost'
@@ -41,7 +41,57 @@ def seleccionar_tabla(accion):
             elif tabla_seleccionada == "PAGOS_COLEGIATURAS":
                 leer_colegiaturas(conn_oracle, 5)
             elif tabla_seleccionada == "VENTAS":
-                leer_colegiaturas(conn_oracle, 6) 
+                leer_colegiaturas(conn_oracle, 6)
+            else:
+                print("Error")
+
+        elif accion == "Crear":
+            if tabla_seleccionada == "CICLOS":
+                año = int(input("Ingrese el año del ciclo: "))
+                descripcion = input("Ingrese la descripción del ciclo: ")
+                insertar_ciclo(conn_oracle, año=año, descripcion=descripcion)
+
+            elif tabla_seleccionada == "DOCUMENTO":
+                tipo_documento = input("Ingrese el tipo de documento: ")
+                fecha_emision = input("Ingrese la fecha de emisión (YYYY-MM-DD): ")
+                serie_fel = input("Ingrese la serie FEL: ")
+                dte_fel = input("Ingrese el DTE FEL: ")
+                monto = float(input("Ingrese el monto: "))
+                id_pago = int(input("Ingrese el ID de pago: "))
+                insertar_documento(conn_oracle, tipo_documento=tipo_documento, fecha_emision=fecha_emision, serie_fel=serie_fel, dte_fel=dte_fel, monto=monto, id_pago=id_pago)
+
+            elif tabla_seleccionada == "ESTUDIANTES":
+                nombre = input("Ingrese el nombre del estudiante: ")
+                codigo_mineduc = input("Ingrese el código MINEDUC: ")
+                grado = input("Ingrese el grado: ")
+                seccion = input("Ingrese la sección: ")
+                insertar_estudiante(conn_oracle, nombre=nombre, codigo_mineduc=codigo_mineduc, grado=grado, seccion=seccion)
+
+            elif tabla_seleccionada == "INSCRIPCIONES":
+                fecha_inscripcion = input("Ingrese la fecha de inscripción (YYYY-MM-DD): ")
+                grado = input("Ingrese el grado: ")
+                seccion = input("Ingrese la sección: ")
+                mes = input("Ingrese el mes de la inscripción: ")
+                monto = float(input("Ingrese el monto: "))
+                id_estudiante = int(input("Ingrese el ID del estudiante: "))
+                id_ciclo = int(input("Ingrese el ID del ciclo: "))
+                insertar_inscripcion(conn_oracle, fecha_inscripcion=fecha_inscripcion, grado=grado, seccion=seccion, mes=mes, monto=monto, id_estudiante=id_estudiante, id_ciclo=id_ciclo)
+
+            elif tabla_seleccionada == "PAGOS_COLEGIATURAS":
+                monto = float(input("Ingrese el monto del pago: "))
+                fecha_pago = input("Ingrese la fecha de pago (YYYY-MM-DD): ")
+                tipo_pago = input("Ingrese el tipo de pago: ")
+                id_estudiante = int(input("Ingrese el ID del estudiante: "))
+                id_inscripcion = int(input("Ingrese el ID de inscripción: "))
+                insertar_pago_colegiatura(conn_oracle, monto=monto, fecha_pago=fecha_pago, tipo_pago=tipo_pago, id_estudiante=id_estudiante, id_inscripcion=id_inscripcion)
+
+            elif tabla_seleccionada == "VENTAS":
+                producto = input("Ingrese el nombre del producto: ")
+                cantidad = int(input("Ingrese la cantidad: "))
+                precio = float(input("Ingrese el precio: "))
+                id_estudiante = int(input("Ingrese el ID del estudiante: "))
+                insertar_venta(conn_oracle, producto=producto, cantidad=cantidad, precio=precio, id_estudiante=id_estudiante)
+
             else:
                 print("Error")
         input("Presiona Enter para continuar...")
@@ -87,14 +137,13 @@ if __name__ == "__main__":
     print ("Proyecto Final de Base de Datos I")
     print ("Modulo Colegiaturas")
     print ("dev: @yorchriv")
-
+    
     usuario = input("Ingrese su nombre de usuario: ")
     contraseña = getpass.getpass("Ingrese su contraseña: ")
 
     # Llama a la función para verificar el usuario
     if verificar_usuario(usuario, contraseña, connection_string):        
-        conn_oracle = conectar_oracle()                    
-
+        conn_oracle = conectar_oracle()                            
         mostrar_menu_principal()
         conn_oracle.close()  # Cierra la conexión después de usarla
         
