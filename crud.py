@@ -1,3 +1,4 @@
+#READ
 def leer_colegiaturas(conn):
     try:
         cursor = conn.cursor()
