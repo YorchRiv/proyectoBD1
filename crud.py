@@ -1,3 +1,20 @@
+def mostrar_registro(conn, tabla, id_registro, id_columna):
+    cursor = conn.cursor()
+    sql = f"SELECT * FROM {tabla} WHERE {id_columna} = :1"
+    cursor.execute(sql, (id_registro,))
+    registro = cursor.fetchone()
+    cursor.close()
+    return registro
+
+def obtener_datos_actuales(conn, tabla, id_registro, id_columna):
+    sql = f"SELECT * FROM {tabla} WHERE {id_columna} = :id"
+    cursor = conn.cursor()
+    cursor.execute(sql, {'id': id_registro})
+    datos = cursor.fetchall()  # Asegúrate de obtener todos los registros
+    cursor.close()
+    return datos  # Retorna los datos encontrados o una lista vacía si no hay resultados
+
+
 def mostrar_datos_antiguos(conn, tabla, id_registro, id_columna):
     cursor = conn.cursor()
     sql = f"SELECT * FROM {tabla} WHERE {id_columna} = :1"  # Solo el nombre de la tabla sin esquema
@@ -10,7 +27,6 @@ def mostrar_datos_antiguos(conn, tabla, id_registro, id_columna):
         print(datos)
     else:
         print("No se encontraron registros para el ID proporcionado.")
-
 
 #CREATE
 def insertar_ciclo(conn, año=None, descripcion=None):
@@ -250,3 +266,61 @@ def actualizar_venta(conn, id_venta, producto=None, cantidad=None, precio=None, 
         print(f"Error al actualizar venta: {e}")
     finally:
         cursor.close()
+
+
+#DELETE
+def verificar_dependencias(conn, id_registro, tabla):
+    cursor = conn.cursor()
+    
+    # Suponiendo que tienes tablas de dependencias que necesitan ser chequeadas
+    dependencias = {
+        "ESTUDIANTES": "INSCRIPCIONES",
+        "INSCRIPCIONES": "PAGOS_COLEGIATURAS",
+        # Agrega otras dependencias según sea necesario
+    }
+    
+    if tabla in dependencias:
+        tabla_dependiente = dependencias[tabla]
+        
+        sql = f"SELECT COUNT(*) FROM {tabla_dependiente} WHERE ID_ESTUDIANTE = :id"  # Usa el nombre correcto de la columna
+        
+        cursor.execute(sql, {'id': id_registro})
+        resultado = cursor.fetchone()[0]
+        
+        cursor.close()
+        
+        return resultado > 0  # Retorna True si hay dependencias
+    return False
+
+
+def eliminar_registro(conn, tabla, id_columna, id_registro):
+    # Obtener datos actuales
+    datos_actuales = obtener_datos_actuales(conn, tabla, id_registro, id_columna)
+
+    if datos_actuales is None or not datos_actuales:
+        print("No se encontraron datos para eliminar.")
+        return
+
+    print("Datos actuales del registro:")
+    for fila in datos_actuales:
+        print(fila)
+
+    # Verificar si existen dependencias
+    if verificar_dependencias(conn, id_registro, tabla):
+        print("No se puede eliminar el registro porque tiene dependencias en otras tablas.")
+        return
+
+    confirmacion = input("¿Está seguro de que desea eliminar este registro? (si/no): ")
+    if confirmacion.lower() == 'si':
+        sql_delete = f"DELETE FROM {tabla} WHERE {id_columna} = :id"
+        cursor = conn.cursor()
+        try:
+            cursor.execute(sql_delete, {'id': id_registro})
+            conn.commit()
+            print("Registro eliminado con éxito.")
+        except Exception as e:
+            print(f"Ocurrió un error al eliminar el registro: {e}")
+        finally:
+            cursor.close()
+    else:
+        print("Eliminación cancelada.")

@@ -157,6 +157,61 @@ def seleccionar_tabla(accion):
             else:
                 print("Error: tabla no válida.")
 
+        elif accion == "Eliminar":
+            if tabla_seleccionada == "CICLOS":
+                id_ciclo = int(input("Ingrese el ID del ciclo a eliminar: "))
+                registro = mostrar_registro(conn_oracle, "CICLOS", id_ciclo, "ID_CICLO")
+                id_columna = "ID_CICLO"
+                id_registro = id_ciclo
+                
+            elif tabla_seleccionada == "DOCUMENTO":
+                id_documento = int(input("Ingrese el ID del documento a eliminar: "))
+                registro = mostrar_registro(conn_oracle, "DOCUMENTO", id_documento, "ID_DOCUMENTO")
+                id_columna = "ID_DOCUMENTO"
+                id_registro = id_documento
+
+            elif tabla_seleccionada == "ESTUDIANTES":
+                id_estudiante = int(input("Ingrese el ID del estudiante a eliminar: "))
+                registro = mostrar_registro(conn_oracle, "ESTUDIANTES", id_estudiante, "ID_ESTUDIANTE")
+                id_columna = "ID_ESTUDIANTE"
+                id_registro = id_estudiante
+
+            elif tabla_seleccionada == "INSCRIPCIONES":
+                id_inscripcion = int(input("Ingrese el ID de inscripción a eliminar: "))
+                registro = mostrar_registro(conn_oracle, "INSCRIPCIONES", id_inscripcion, "ID_INSCRIPCION")
+                id_columna = "ID_INSCRIPCION"
+                id_registro = id_inscripcion
+
+            elif tabla_seleccionada == "PAGOS_COLEGIATURAS":
+                id_pago_colegiatura = int(input("Ingrese el ID del pago a eliminar: "))
+                registro = mostrar_registro(conn_oracle, "PAGOS_COLEGIATURAS", id_pago_colegiatura, "ID_PAGO_COLEGIATURAS")
+                id_columna = "ID_PAGO_COLEGIATURAS"
+                id_registro = id_pago_colegiatura
+
+            elif tabla_seleccionada == "VENTAS":
+                id_venta = int(input("Ingrese el ID de la venta a eliminar: "))
+                registro = mostrar_registro(conn_oracle, "VENTAS", id_venta, "ID_VENTA")
+                id_columna = "ID_VENTA"
+                id_registro = id_venta
+
+            else:
+                print("Error: tabla no válida.")
+                registro = None
+                id_columna = None
+                id_registro = None
+
+            # Si se encontró el registro, mostrar la información y confirmar eliminación
+            if registro:
+                print("Información del registro a eliminar:")
+                print(registro)
+
+                confirmacion = input("¿Está seguro de que desea eliminar este registro? (si/no): ")
+                if confirmacion.lower() == 'si':
+                    eliminar_registro(conn_oracle, tabla_seleccionada, id_columna, id_registro)  # Aquí está la llamada corregida
+                else:
+                    print("Eliminación cancelada.")
+
+
         input("Presiona Enter para continuar...")
     elif choice == str(len(tablas) + 1):
         return  # Regresa al menú principal
