@@ -40,33 +40,10 @@ if __name__ == "__main__":
 
     # Llama a la función para verificar el usuario
     if verificar_usuario(usuario, contraseña, connection_string):
-        while True:
-            limpiar_consola()  # Limpia la consola para el menú
-            conn_oracle = conectar_oracle()
-
-            mostrar_menu_principal()
-
-            opcion = input("Ingrese la opción deseada: ")
-
-            if opcion == '1':
-                #crear_registro_colegiaturas(conn_oracle)
-                print("Opcion 1")
-            elif opcion == '2':
-                leer_colegiaturas(conn_oracle)
-                print("Presiona Enter para continuar...")
-                input() 
-            elif opcion == '3':
-                #actualizar_registro_colegiaturas(conn_oracle)
-                print("Opcion 3")
-            elif opcion == '4':
-                #eliminar_registro_colegiaturas(conn_oracle)
-                print("Opcion 3")
-            elif opcion == '5':
-                print("Saliendo del sistema...")
-                break
-            else:
-                print("Opción no válida. Intente nuevamente.")
-        conn_oracle = conectar_oracle()
-        leer_colegiaturas(conn_oracle)
+        limpiar_consola()  # Limpia la consola para el menú
+        conn_oracle = conectar_oracle()            
+        conn_oracle = conectar_oracle()        
+        mostrar_menu_principal()
+        leer_colegiaturas(conn_oracle, 1)
         conn_oracle.close()  # Cierra la conexión después de usarla
         
