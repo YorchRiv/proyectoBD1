@@ -1,6 +1,8 @@
 import os
 import getpass
 from auth import verificar_usuario
+from db_oracle import conectar_oracle
+from crud import leer_colegiaturas
 
 def limpiar_consola():
     # Comando para limpiar la consola, funciona en Windows y en Unix
@@ -18,10 +20,12 @@ if __name__ == "__main__":
     print ("Proyecto Final de Base de Datos I")
     print ("Modulo Colegiaturas")
     print ("dev: @yorchriv")
-    print ("")
+
+    conn_oracle = conectar_oracle()
+    leer_colegiaturas(conn_oracle)
+    conn_oracle.close()  # Cierra la conexión después de usarla
+
     usuario = input("Ingrese su nombre de usuario: ")
-    
-    # Usar getpass para ingresar la contraseña de manera oculta
     contraseña = getpass.getpass("Ingrese su contraseña: ")
 
     # Llama a la función para verificar el usuario
