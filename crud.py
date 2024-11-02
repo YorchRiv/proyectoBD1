@@ -2,7 +2,7 @@
 def insertar_ciclo(conn, año=None, descripcion=None):
     cursor = conn.cursor()
     sql = """
-        INSERT INTO USUARIO_DBA.CICLOS (AÑO, DESCRIPCION)
+        INSERT INTO CICLOS (AÑO, DESCRIPCION)
         VALUES (:1, :2)
     """
     try:
@@ -32,7 +32,7 @@ def insertar_documento(conn, tipo_documento, fecha_emision, serie_fel, dte_fel, 
 def insertar_estudiante(conn, nombre=None, codigo_mineduc=None, grado=None, seccion=None):
     cursor = conn.cursor()
     sql = """
-        INSERT INTO USUARIO_DBA.ESTUDIANTES (NOMBRE, CODIGO_MINEDUC, GRADO, SECCION)
+        INSERT INTO ESTUDIANTES (NOMBRE, CODIGO_MINEDUC, GRADO, SECCION)
         VALUES (:1, :2, :3, :4)
     """
     try:
@@ -47,7 +47,7 @@ def insertar_estudiante(conn, nombre=None, codigo_mineduc=None, grado=None, secc
 def insertar_inscripcion(conn, fecha_inscripcion=None, grado=None, seccion=None, mes=None, monto=None, id_estudiante=None, id_ciclo=None):
     cursor = conn.cursor()
     sql = """
-        INSERT INTO USUARIO_DBA.INSCRIPCIONES (FECHA_INSCRIPCION, GRADO, SECCION, MES, MONTO, ID_ESTUDIANTE, ID_CICLO)
+        INSERT INTO INSCRIPCIONES (FECHA_INSCRIPCION, GRADO, SECCION, MES, MONTO, ID_ESTUDIANTE, ID_CICLO)
         VALUES (TO_DATE(:1, 'YYYY-MM-DD'), :2, :3, :4, :5, :6, :7)
     """
     try:
@@ -62,7 +62,7 @@ def insertar_inscripcion(conn, fecha_inscripcion=None, grado=None, seccion=None,
 def insertar_pago_colegiatura(conn, monto=None, fecha_pago=None, tipo_pago=None, id_estudiante=None, id_inscripcion=None):
     cursor = conn.cursor()
     sql = """
-        INSERT INTO USUARIO_DBA.PAGOS_COLEGIATURAS (MONTO, FECHA_PAGO, TIPO_PAGO, ID_ESTUDIANTE, ID_INSCRIPCION)
+        INSERT INTO PAGOS_COLEGIATURAS (MONTO, FECHA_PAGO, TIPO_PAGO, ID_ESTUDIANTE, ID_INSCRIPCION)
         VALUES (:1, TO_DATE(:2, 'YYYY-MM-DD'), :3, :4, :5)
     """
     try:
@@ -77,7 +77,7 @@ def insertar_pago_colegiatura(conn, monto=None, fecha_pago=None, tipo_pago=None,
 def insertar_venta(conn, producto=None, cantidad=None, precio=None, id_estudiante=None):
     cursor = conn.cursor()
     sql = """
-        INSERT INTO USUARIO_DBA.VENTAS (PRODUCTO, CANTIDAD, PRECIO, ID_ESTUDIANTE)
+        INSERT INTO VENTAS (PRODUCTO, CANTIDAD, PRECIO, ID_ESTUDIANTE)
         VALUES (:1, :2, :3, :4)
     """
     try:
