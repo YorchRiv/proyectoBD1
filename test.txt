@@ -1,0 +1,3 @@
+conn_oracle = conectar_oracle()
+    leer_colegiaturas(conn_oracle)
+    conn_oracle.close()  # Cierra la conexión después de usarla

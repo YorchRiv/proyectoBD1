@@ -119,3 +119,4 @@ def leer_colegiaturas(conn, tabla_num):
     finally:
         cursor.close()
 
+#UPDATE
