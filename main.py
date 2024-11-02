@@ -184,8 +184,8 @@ def seleccionar_tabla(accion):
 
             elif tabla_seleccionada == "PAGOS_COLEGIATURAS":
                 id_pago_colegiatura = int(input("Ingrese el ID del pago a eliminar: "))
-                registro = mostrar_registro(conn_oracle, "PAGOS_COLEGIATURAS", id_pago_colegiatura, "ID_PAGO_COLEGIATURAS")
-                id_columna = "ID_PAGO_COLEGIATURAS"
+                registro = mostrar_registro(conn_oracle, "PAGOS_COLEGIATURAS", id_pago_colegiatura, "ID_PAGO")
+                id_columna = "ID_PAGO"
                 id_registro = id_pago_colegiatura
 
             elif tabla_seleccionada == "VENTAS":
