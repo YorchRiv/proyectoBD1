@@ -1,3 +1,17 @@
+def mostrar_datos_antiguos(conn, tabla, id_registro, id_columna):
+    cursor = conn.cursor()
+    sql = f"SELECT * FROM {tabla} WHERE {id_columna} = :1"  # Solo el nombre de la tabla sin esquema
+    cursor.execute(sql, (id_registro,))
+    datos = cursor.fetchone()
+    cursor.close()
+    
+    if datos:
+        print("Datos antiguos:")
+        print(datos)
+    else:
+        print("No se encontraron registros para el ID proporcionado.")
+
+
 #CREATE
 def insertar_ciclo(conn, año=None, descripcion=None):
     cursor = conn.cursor()
@@ -120,3 +134,119 @@ def leer_colegiaturas(conn, tabla_num):
         cursor.close()
 
 #UPDATE
+def actualizar_ciclo(conn, id_ciclo, año=None, descripcion=None):
+    cursor = conn.cursor()
+    sql = """
+        UPDATE USUARIO_DBA.CICLOS
+        SET AÑO = NVL(:1, AÑO), DESCRIPCION = NVL(:2, DESCRIPCION)
+        WHERE ID_CICLO = :3
+    """
+    try:
+        cursor.execute(sql, (año, descripcion, id_ciclo))
+        conn.commit()
+        print("Ciclo actualizado correctamente.")
+    except Exception as e:
+        print(f"Error al actualizar ciclo: {e}")
+    finally:
+        cursor.close()
+
+def actualizar_documento(conn, id_documento, tipo_documento=None, fecha_emision=None, serie_fel=None, dte_fel=None, monto=None, id_pago=None):
+    cursor = conn.cursor()
+    sql = """
+        UPDATE DOCUMENTO
+        SET TIPO_DOCUMENTO = NVL(:1, TIPO_DOCUMENTO),
+            FECHA_EMISION = NVL(TO_DATE(:2, 'YYYY-MM-DD'), FECHA_EMISION),
+            SERIE_FEL = NVL(:3, SERIE_FEL),
+            DTE_FEL = NVL(:4, DTE_FEL),
+            MONTO = NVL(:5, MONTO),
+            ID_PAGO = NVL(:6, ID_PAGO)
+        WHERE ID_DOCUMENTO = :7
+    """
+    try:
+        cursor.execute(sql, (tipo_documento, fecha_emision, serie_fel, dte_fel, monto, id_pago, id_documento))
+        conn.commit()
+        print("Documento actualizado correctamente.")
+    except Exception as e:
+        print(f"Error al actualizar documento: {e}")
+    finally:
+        cursor.close()
+
+def actualizar_estudiante(conn, id_estudiante, nombre=None, codigo_mineduc=None, grado=None, seccion=None):
+    cursor = conn.cursor()
+    sql = """
+        UPDATE USUARIO_DBA.ESTUDIANTES
+        SET NOMBRE = NVL(:1, NOMBRE),
+            CODIGO_MINEDUC = NVL(:2, CODIGO_MINEDUC),
+            GRADO = NVL(:3, GRADO),
+            SECCION = NVL(:4, SECCION)
+        WHERE ID_ESTUDIANTE = :5
+    """
+    try:
+        cursor.execute(sql, (nombre, codigo_mineduc, grado, seccion, id_estudiante))
+        conn.commit()
+        print("Estudiante actualizado correctamente.")
+    except Exception as e:
+        print(f"Error al actualizar estudiante: {e}")
+    finally:
+        cursor.close()
+
+def actualizar_inscripcion(conn, id_inscripcion, fecha_inscripcion=None, grado=None, seccion=None, mes=None, monto=None, id_estudiante=None, id_ciclo=None):
+    cursor = conn.cursor()
+    sql = """
+        UPDATE USUARIO_DBA.INSCRIPCIONES
+        SET FECHA_INSCRIPCION = NVL(TO_DATE(:1, 'YYYY-MM-DD'), FECHA_INSCRIPCION),
+            GRADO = NVL(:2, GRADO),
+            SECCION = NVL(:3, SECCION),
+            MES = NVL(:4, MES),
+            MONTO = NVL(:5, MONTO),
+            ID_ESTUDIANTE = NVL(:6, ID_ESTUDIANTE),
+            ID_CICLO = NVL(:7, ID_CICLO)
+        WHERE ID_INSCRIPCION = :8
+    """
+    try:
+        cursor.execute(sql, (fecha_inscripcion, grado, seccion, mes, monto, id_estudiante, id_ciclo, id_inscripcion))
+        conn.commit()
+        print("Inscripción actualizada correctamente.")
+    except Exception as e:
+        print(f"Error al actualizar inscripción: {e}")
+    finally:
+        cursor.close()
+
+def actualizar_pago_colegiatura(conn, id_pago, monto=None, fecha_pago=None, tipo_pago=None, id_estudiante=None, id_inscripcion=None):
+    cursor = conn.cursor()
+    sql = """
+        UPDATE USUARIO_DBA.PAGOS_COLEGIATURAS
+        SET MONTO = NVL(:1, MONTO),
+            FECHA_PAGO = NVL(TO_DATE(:2, 'YYYY-MM-DD'), FECHA_PAGO),
+            TIPO_PAGO = NVL(:3, TIPO_PAGO),
+            ID_ESTUDIANTE = NVL(:4, ID_ESTUDIANTE),
+            ID_INSCRIPCION = NVL(:5, ID_INSCRIPCION)
+        WHERE ID_PAGO = :6
+    """
+    try:
+        cursor.execute(sql, (monto, fecha_pago, tipo_pago, id_estudiante, id_inscripcion, id_pago))
+        conn.commit()
+        print("Pago de colegiatura actualizado correctamente.")
+    except Exception as e:
+        print(f"Error al actualizar pago de colegiatura: {e}")
+    finally:
+        cursor.close()
+
+def actualizar_venta(conn, id_venta, producto=None, cantidad=None, precio=None, id_estudiante=None):
+    cursor = conn.cursor()
+    sql = """
+        UPDATE USUARIO_DBA.VENTAS
+        SET PRODUCTO = NVL(:1, PRODUCTO),
+            CANTIDAD = NVL(:2, CANTIDAD),
+            PRECIO = NVL(:3, PRECIO),
+            ID_ESTUDIANTE = NVL(:4, ID_ESTUDIANTE)
+        WHERE ID_VENTA = :5
+    """
+    try:
+        cursor.execute(sql, (producto, cantidad, precio, id_estudiante, id_venta))
+        conn.commit()
+        print("Venta actualizada correctamente.")
+    except Exception as e:
+        print(f"Error al actualizar venta: {e}")
+    finally:
+        cursor.close()
