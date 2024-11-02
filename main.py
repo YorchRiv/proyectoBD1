@@ -29,10 +29,21 @@ def seleccionar_tabla(accion):
     if choice.isdigit() and 1 <= int(choice) <= len(tablas):
         tabla_seleccionada = tablas[int(choice) - 1]
         print(f"Has seleccionado {accion} para la tabla: {tabla_seleccionada}")
-        if accion == "Leer" and tabla_seleccionada == "CICLOS":
-            leer_colegiaturas(conn_oracle, 1)  # Llama a la función específica para CICLOS
-        else:
-            print("Error")
+        if accion == "Leer":
+            if tabla_seleccionada == "CICLOS":
+                leer_colegiaturas(conn_oracle, 1)  # Llama a leer_colegiaturas para CICLOS
+            elif tabla_seleccionada == "DOCUMENTO":
+                leer_colegiaturas(conn_oracle, 2)  
+            elif tabla_seleccionada == "ESTUDIANTES":
+                leer_colegiaturas(conn_oracle, 3)  
+            elif tabla_seleccionada == "INSCRIPCIONES":
+                leer_colegiaturas(conn_oracle, 4)  
+            elif tabla_seleccionada == "PAGOS_COLEGIATURAS":
+                leer_colegiaturas(conn_oracle, 5)
+            elif tabla_seleccionada == "VENTAS":
+                leer_colegiaturas(conn_oracle, 6) 
+            else:
+                print("Error")
         input("Presiona Enter para continuar...")
     elif choice == str(len(tablas) + 1):
         return  # Regresa al menú principal
