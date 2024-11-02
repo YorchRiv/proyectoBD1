@@ -5,10 +5,14 @@ def insertar_ciclo(conn, año=None, descripcion=None):
         INSERT INTO USUARIO_DBA.CICLOS (AÑO, DESCRIPCION)
         VALUES (:1, :2)
     """
-    cursor.execute(sql, (año, descripcion))
-    conn.commit()
-    print("Ciclo insertado correctamente.")
-    cursor.close()
+    try:
+        cursor.execute(sql, (año, descripcion))
+        conn.commit()
+        print("Ciclo insertado correctamente.")
+    except Exception as e:
+        print(f"Error al insertar ciclo: {e}")
+    finally:
+        cursor.close()
 
 def insertar_documento(conn, tipo_documento, fecha_emision, serie_fel, dte_fel, monto, id_pago):
     cursor = conn.cursor()
@@ -16,11 +20,14 @@ def insertar_documento(conn, tipo_documento, fecha_emision, serie_fel, dte_fel, 
         INSERT INTO DOCUMENTO (TIPO_DOCUMENTO, FECHA_EMISION, SERIE_FEL, DTE_FEL, MONTO, ID_PAGO)
         VALUES (:1, TO_DATE(:2, 'YYYY-MM-DD'), :3, :4, :5, :6)
     """
-    cursor.execute(sql, (tipo_documento, fecha_emision, serie_fel, dte_fel, monto, id_pago))
-    conn.commit()
-    print("Documento insertado correctamente.")
-    cursor.close()
-
+    try:
+        cursor.execute(sql, (tipo_documento, fecha_emision, serie_fel, dte_fel, monto, id_pago))
+        conn.commit()
+        print("Documento insertado correctamente.")
+    except Exception as e:
+        print(f"Error al insertar documento: {e}")
+    finally:
+        cursor.close()
 
 def insertar_estudiante(conn, nombre=None, codigo_mineduc=None, grado=None, seccion=None):
     cursor = conn.cursor()
@@ -28,10 +35,14 @@ def insertar_estudiante(conn, nombre=None, codigo_mineduc=None, grado=None, secc
         INSERT INTO USUARIO_DBA.ESTUDIANTES (NOMBRE, CODIGO_MINEDUC, GRADO, SECCION)
         VALUES (:1, :2, :3, :4)
     """
-    cursor.execute(sql, (nombre, codigo_mineduc, grado, seccion))
-    conn.commit()
-    print("Estudiante insertado correctamente.")
-    cursor.close()
+    try:
+        cursor.execute(sql, (nombre, codigo_mineduc, grado, seccion))
+        conn.commit()
+        print("Estudiante insertado correctamente.")
+    except Exception as e:
+        print(f"Error al insertar estudiante: {e}")
+    finally:
+        cursor.close()
 
 def insertar_inscripcion(conn, fecha_inscripcion=None, grado=None, seccion=None, mes=None, monto=None, id_estudiante=None, id_ciclo=None):
     cursor = conn.cursor()
@@ -39,10 +50,14 @@ def insertar_inscripcion(conn, fecha_inscripcion=None, grado=None, seccion=None,
         INSERT INTO USUARIO_DBA.INSCRIPCIONES (FECHA_INSCRIPCION, GRADO, SECCION, MES, MONTO, ID_ESTUDIANTE, ID_CICLO)
         VALUES (TO_DATE(:1, 'YYYY-MM-DD'), :2, :3, :4, :5, :6, :7)
     """
-    cursor.execute(sql, (fecha_inscripcion, grado, seccion, mes, monto, id_estudiante, id_ciclo))
-    conn.commit()
-    print("Inscripción insertada correctamente.")
-    cursor.close()
+    try:
+        cursor.execute(sql, (fecha_inscripcion, grado, seccion, mes, monto, id_estudiante, id_ciclo))
+        conn.commit()
+        print("Inscripción insertada correctamente.")
+    except Exception as e:
+        print(f"Error al insertar inscripción: {e}")
+    finally:
+        cursor.close()
 
 def insertar_pago_colegiatura(conn, monto=None, fecha_pago=None, tipo_pago=None, id_estudiante=None, id_inscripcion=None):
     cursor = conn.cursor()
@@ -50,10 +65,14 @@ def insertar_pago_colegiatura(conn, monto=None, fecha_pago=None, tipo_pago=None,
         INSERT INTO USUARIO_DBA.PAGOS_COLEGIATURAS (MONTO, FECHA_PAGO, TIPO_PAGO, ID_ESTUDIANTE, ID_INSCRIPCION)
         VALUES (:1, TO_DATE(:2, 'YYYY-MM-DD'), :3, :4, :5)
     """
-    cursor.execute(sql, (monto, fecha_pago, tipo_pago, id_estudiante, id_inscripcion))
-    conn.commit()
-    print("Pago de colegiatura insertado correctamente.")
-    cursor.close()
+    try:
+        cursor.execute(sql, (monto, fecha_pago, tipo_pago, id_estudiante, id_inscripcion))
+        conn.commit()
+        print("Pago de colegiatura insertado correctamente.")
+    except Exception as e:
+        print(f"Error al insertar pago de colegiatura: {e}")
+    finally:
+        cursor.close()
 
 def insertar_venta(conn, producto=None, cantidad=None, precio=None, id_estudiante=None):
     cursor = conn.cursor()
@@ -61,10 +80,14 @@ def insertar_venta(conn, producto=None, cantidad=None, precio=None, id_estudiant
         INSERT INTO USUARIO_DBA.VENTAS (PRODUCTO, CANTIDAD, PRECIO, ID_ESTUDIANTE)
         VALUES (:1, :2, :3, :4)
     """
-    cursor.execute(sql, (producto, cantidad, precio, id_estudiante))
-    conn.commit()
-    print("Venta insertada correctamente.")
-    cursor.close()
+    try:
+        cursor.execute(sql, (producto, cantidad, precio, id_estudiante))
+        conn.commit()
+        print("Venta insertada correctamente.")
+    except Exception as e:
+        print(f"Error al insertar venta: {e}")
+    finally:
+        cursor.close()
 
 
 #READ
